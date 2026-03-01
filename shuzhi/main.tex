@@ -1,0 +1,337 @@
+\documentclass[a4paper]{article}
+\usepackage[affil-it]{authblk}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\addbibresource{citation.bib}
+
+\begin{document}
+% =================================================
+\title{Numerical Analysis homework 1 }
+
+\author{Zhang Zihao 3230101685
+  \thanks{Electronic address: \texttt{3230101685@zju.edu.cn}}}
+\affil{(Information and Computing Science 1), Zhejiang University }
+
+
+\date{Due time: \today}
+
+\maketitle
+
+\begin{abstract}
+    My homework for solving nonlinear equations.     
+\end{abstract}
+
+
+
+
+
+% ============================================
+\section*{I. Bisection problems}
+
+\subsection*{I-a}
+
+The width of the interval at the nth step is $\frac{1}{2^{n-1}}$\cite{Zhang2020BooleanAO}
+
+\subsection*{I-b}
+
+The supremum of the distance between the root r and the midpoint of the interval is $\frac{1}{2^{n}}$
+
+\section*{II. Relative error of bisection problems}
+
+After $n$ steps, the absolute error is bounded by:
+\[
+|c_n - r| \leq \frac{b_0 - a_0}{2^{n+1}}
+\]
+
+We require:
+\[
+\left|\frac{c_n - r}{r}\right| \leq \epsilon
+\]
+Since $r \geq a_0 > 0$:
+
+\[
+\frac{b_0 - a_0}{2^{n+1}} \leq \epsilon a_0
+\]
+
+\[
+2^{n+1} \geq \frac{b_0 - a_0}{\epsilon a_0}
+\]
+
+\[
+n \geq \frac{\log \left( \frac{b_0 - a_0}{\epsilon a_0} \right)}{\log 2} - 1
+\]
+
+\[
+\boxed{n \geq \frac{\log(b_0 - a_0) - \log \epsilon - \log a_0}{\log 2} - 1}
+\]
+
+\section*{III. Perform four iterations of Newton’s method}
+
+Given the polynomial equation:
+\[
+p(x) = 4x^3 - 2x^2 + 3
+\]
+with derivative:
+\[
+p'(x) = 12x^2 - 4x
+\]
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+Iteration & $x_n$ & $p(x_n)$ & $p'(x_n)$ & $x_{n+1}$ \\
+\midrule
+0 & $-1.00000$ & $-3.000$ & $16.000$ & $-0.81250$ \\
+1 & $-0.81250$ & $-0.464$ & $11.170$ & $-0.77100$ \\
+2 & $-0.77100$ & $-0.020$ & $10.212$ & $-0.76904$ \\
+3 & $-0.76904$ & $-0.002$ & $10.168$ & $-0.76884$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Iteration 0:}
+\begin{align*}
+p(x_0) &= 4(-1)^3 - 2(-1)^2 + 3 = -4 - 2 + 3 = -3 \\
+p'(x_0) &= 12(-1)^2 - 4(-1) = 12 + 4 = 16 \\
+x_1 &= -1 - \frac{-3}{16} = -1 + 0.1875 = -0.8125
+\end{align*}
+
+\paragraph*{Iteration 1:}
+\begin{align*}
+p(x_1) &= 4(-0.8125)^3 - 2(-0.8125)^2 + 3 \\
+&= -2.144 - 1.320 + 3 = -0.464 \\
+p'(x_1) &= 12(-0.8125)^2 - 4(-0.8125) \\
+&= 7.920 + 3.25 = 11.170 \\
+x_2 &= -0.8125 - \frac{-0.464}{11.170} \\
+&= -0.8125 + 0.0415 = -0.7710
+\end{align*}
+
+\paragraph*{Iteration 2:}
+\begin{align*}
+p(x_2) &= 4(-0.7710)^3 - 2(-0.7710)^2 + 3 \\
+&= -1.832 - 1.188 + 3 = -0.020 \\
+p'(x_2) &= 12(-0.7710)^2 - 4(-0.7710) \\
+&= 7.128 + 3.084 = 10.212 \\
+x_3 &= -0.7710 - \frac{-0.020}{10.212} \\
+&= -0.7710 + 0.00196 = -0.76904
+\end{align*}
+
+\paragraph*{Iteration 3:}
+\begin{align*}
+p(x_3) &= 4(-0.76904)^3 - 2(-0.76904)^2 + 3 \\
+&= -1.820 - 1.182 + 3 = -0.002 \\
+p'(x_3) &= 12(-0.76904)^2 - 4(-0.76904) \\
+&= 7.092 + 3.076 = 10.168 \\
+x_4 &= -0.76904 - \frac{-0.002}{10.168} \\
+&= -0.76904 + 0.000197 = -0.76884
+\end{align*}
+
+\section*{IV. A variation of Newton’s method}
+
+Let \( \alpha \) be the true root, so the error at step \( n \) is:
+\[
+e_n = x_n - \alpha
+\]
+
+The error at step \( n+1 \) is:
+\[
+e_{n+1} = x_{n+1} - \alpha = x_n - \frac{f(x_n)}{f'(x_0)} - \alpha
+\]
+
+Using Taylor expansion of \( f(x_n) \) around \( \alpha \):
+\[
+f(x_n) = f(\alpha) + f'(\alpha)(x_n - \alpha) + \frac{f''(\xi_n)}{2}(x_n - \alpha)^2
+\]
+Since \( f(\alpha) = 0 \):
+\[
+f(x_n) = f'(\alpha)e_n + \frac{f''(\xi_n)}{2}e_n^2
+\]
+
+\[
+e_{n+1} = e_n - \frac{f'(\alpha)e_n + \frac{f''(\xi_n)}{2}e_n^2}{f'(x_0)}
+\]
+
+\[
+e_{n+1} = \left(1 - \frac{f'(\alpha)}{f'(x_0)}\right)e_n - \frac{f''(\xi_n)}{2f'(x_0)}e_n^2
+\]
+
+For sufficiently small errors, the second-order term may be ignored as it becomes negligible.
+\[
+s = 1, \quad C = 1 - \frac{f'(\alpha)}{f'(x_0)}
+\]
+
+\section*{V.Convergence Analysis}
+
+Although $g'(0) = 1$,but for $x \neq 0$:
+\[
+|g'(x)| = \left|\frac{1}{1 + x^2}\right| < 1 \quad \text{and} \quad |\arctan x| < |x|
+\]
+Therefore, the iteration is a contraction mapping.It converges.
+
+\section*{VI.Convergence Analysis}
+
+Consider the function:
+\[
+f(x) = \frac{1}{p + x}
+\]
+Its derivative is:
+\[
+f'(x) = -\frac{1}{(p + x)^2}
+\]
+For \( x > 0 \) and \( p > 1 \), we have:
+\[
+|f'(x)| = \frac{1}{(p + x)^2} < \frac{1}{p^2} < 1
+\]
+Thus, \( f \) is a contraction mapping on \( (0, \infty) \), guaranteeing convergence.
+
+\[
+x = \frac{1}{p + x}
+\]
+This can be rewritten as:
+\[
+x(p + x) = 1
+\]
+\[
+x^2 + px - 1 = 0
+\]
+
+The quadratic equation has solutions:
+\[
+x = \frac{-p \pm \sqrt{p^2 + 4}}{2}
+\]
+Since \( p > 1 \) and \( x > 0 \) (as all terms are positive), we take the positive root:
+\[
+x = \frac{-p + \sqrt{p^2 + 4}}{2}
+\]
+And it's the answer.
+
+\section*{VII.Another Analysis for II}
+\paragraph*{Case: $a_0 < 0 < b_0$}
+When the root $r$ is close to or equal to zero, the relative error measure:
+\[
+\text{Relative Error} = \frac{|x_n - r|}{|r|}
+\]
+becomes problematic because the denominator $|r|$ approaches zero.
+
+So when $r$ is near zero, we should use absolute error instead:
+\[
+|x_n - r| \leq \epsilon
+\]
+The absolute error bound for bisection method is:
+\[
+|x_n - r| \leq \frac{b_0 - a_0}{2^{n+1}}
+\]
+
+To guarantee absolute error $\leq \epsilon$:
+\[
+\frac{b_0 - a_0}{2^{n+1}} \leq \epsilon
+\]
+\[
+2^{n+1} \geq \frac{b_0 - a_0}{\epsilon}
+\]
+\[
+n + 1 \geq \log_2 \left( \frac{b_0 - a_0}{\epsilon} \right)
+\]
+\[
+n \geq \frac{\log(b_0 - a_0) - \log \epsilon}{\log 2} - 1
+\]
+
+\section*{VIII.a Root of Multiplicity k in Newton's Method}
+
+Let \( r \) be a root of multiplicity \( k > 1 \) of \( f(x) \). Then \( f(x) \) can be written as:
+\[
+f(x) = (x - r)^k g(x), \quad \text{where }  g(r) \neq 0.
+\]
+
+The derivative is:
+\[
+f'(x) = k(x - r)^{k-1} g(x) + (x - r)^k g'(x) = (x - r)^{k-1} [k g(x) + (x - r) g'(x)].
+\]
+
+The iteration is:
+\[
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.
+\]
+
+Let \( e_n = x_n - r \) be the error at step \( n \). Then:
+
+\[
+\begin{aligned}
+e_{n+1} &= e_n - \frac{f(x_n)}{f'(x_n)} \\
+&= e_n - \frac{(x_n - r)^k g(x_n)}{(x_n - r)^{k-1} [k g(x_n) + (x_n - r) g'(x_n)]} \\
+&= e_n - \frac{e_n^k g(x_n)}{e_n^{k-1} [k g(x_n) + e_n g'(x_n)]} \\
+&= e_n - \frac{e_n g(x_n)}{k g(x_n) + e_n g'(x_n)}.
+\end{aligned}
+\]
+
+So:
+\[
+\begin{aligned}
+e_{n+1} &= e_n \left[ \frac{k g(x_n) + e_n g'(x_n) - g(x_n)}{k g(x_n) + e_n g'(x_n)} \right] \\
+&= e_n \left[ \frac{(k-1) g(x_n) + e_n g'(x_n)}{k g(x_n) + e_n g'(x_n)} \right].
+\end{aligned}
+\]
+
+Limit as \( e_n \to 0 \)
+As \( x_n \to r \) (so \( e_n \to 0 \)) and since \( g(x) \) is continuous with \( g(r) \neq 0 \):
+\[
+\lim_{e_n \to 0} \frac{(k-1) g(x_n) + e_n g'(x_n)}{k g(x_n) + e_n g'(x_n)} = \frac{(k-1) g(r)}{k g(r)} = 1 - \frac{1}{k}.
+\]
+
+Therefore, for small \( e_n \):
+\[
+e_{n+1} \approx \left(1 - \frac{1}{k}\right) e_n.
+\]
+
+\subsubsection*{Part 1: Detecting Multiple Zeros}
+
+A multiple zero can be detected by observing the convergence behavior:
+
+\begin{itemize}
+\item For a simple root (\( k = 1 \)), Newton's method exhibits quadratic convergence:
+\[
+|e_{n+1}| \approx C |e_n|^2
+\]
+where \( e_n = x_n - r \).
+
+\item For a multiple root (\( k > 1 \)), standard Newton's method shows linear convergence:
+\[
+|e_{n+1}| \approx \left(1 - \frac{1}{k}\right) |e_n|
+\]
+
+\item Diagnostic approach: Compute the ratio \( \frac{|e_{n+1}|}{|e_n|} \). If it approaches a constant \( \in (0, 1) \) rather than 0, this suggests a multiple root.
+\end{itemize}
+
+\subsubsection*{Part 2: Proof of Quadratic Convergence for Modified Newton's Method}
+\[
+x_{n+1} = x_n - k \frac{f(x_n)}{f'(x_n)} = x_n - k \frac{e_n^k g(x_n)}{e_n^{k-1} [k g(x_n) + e_n g'(x_n)]}
+\]
+\[
+e_{n+1} = e_n - k \frac{e_n g(x_n)}{k g(x_n) + e_n g'(x_n)} = e_n \left[1 - \frac{k g(x_n)}{k g(x_n) + e_n g'(x_n)}\right]
+\]
+\[
+e_{n+1} = e_n \left[\frac{e_n g'(x_n)}{k g(x_n) + e_n g'(x_n)}\right] \approx \frac{g'(r)}{k g(r)} e_n^2 \quad \text{(quadratic convergence)}
+\]
+
+Thus, the modified Newton's method restores quadratic convergence for multiple roots.
+
+\end{document}
+
+
+% ===============================================
+\section*{ \center{\normalsize {Acknowledgement}} }
+Give your acknowledgements here(if any).
+
+
+\printbibliography
+
+If you are not familiar with \texttt{bibtex}, 
+it is acceptable to put a table here for your references.
+\end{document}
